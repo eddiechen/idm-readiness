@@ -21,8 +21,10 @@
   - Global catalog service to allow AD to lookup IDM credentials, required by a true 2-way trust, is on the roadmap.
 * On Average, how many groups does an AD user belong to
   - We have seem as high as over 200 groups per AD user.  It hindered login performance. SSSD had to read every group and timed out before it could finish.  If large number of memberships, please consult with an IdM SME before proceed further
+  - AD user with groups 100+ and groups being big and nested some optimization might be needed. So do not expect that SSSD would blindly work without any performance issues. Default configuration is not optimized for large numbers of groups and SSD tune up would be due.
 * Are POSIX attributes populated inside AD (uid,gid,HomeDir,loginshell)
   - It is recommended to replicate them to the global catalog for better performance
+  - SSSD is able to autodetect if POSIX attributes are not present in GC and disable the GC support on the fly
   - Use the "--range-type" parameter on "ipa trust-add" to specify that POSIX attributes should be read from AD
   - https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/7/html/Windows_Integration_Guide/ex.sssd-ad-posix.html
 
